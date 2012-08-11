@@ -5,7 +5,7 @@ describe Player do
 
   describe "#prompt" do
     it "returns the users prompt" do
-      subject.prompt.should == " >>"
+      subject.prompt.should == " >> "
     end
   end
 end

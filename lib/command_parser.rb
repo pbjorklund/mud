@@ -8,9 +8,7 @@ class CommandParser
 
   def parse data, connection
     @connection = connection
-
     command, message = data.split(' ')
-
     self.send(command.to_sym, message) if @commands.select { |c| c.match /^#{command}/ } unless command.nil?
   end
 

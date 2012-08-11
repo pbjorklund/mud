@@ -4,6 +4,6 @@ class Player
 
   def initialize name 
     @name = name
-    @prompt = " >>"
+    @prompt = " >> "
   end
 end

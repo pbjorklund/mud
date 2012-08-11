@@ -1,10 +1,12 @@
 class World
   attr_accessor :players
+  attr_reader :command_parser
   attr_reader :server
 
   def initialize server
     @server = server
     @players = []
+    @command_parser = CommandParser.new self
   end
 
   def add_player player

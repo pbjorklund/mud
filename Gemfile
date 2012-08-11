@@ -8,4 +8,5 @@ group :development do
   gem 'guard-rspec'
   gem 'pry'
   gem 'pry-nav'
+  gem 'em-spec', git: "https://github.com/danielsdeleo/em-spec.git"
 end

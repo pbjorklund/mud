@@ -1,9 +1,11 @@
 class World
   attr_reader :command_parser
   attr_accessor :players
+  attr_reader :server
 
-  def initialize command_parser
-    @command_parser = command_parser
+  def initialize server
+    @command_parser = CommandParser.new(self)
+    @server = server
     @players = []
   end
 
@@ -19,7 +21,7 @@ class World
     ">> "
   end
 
-  def tick
-    
+  def broadcast message
+    @server.connections.each { |c| c.send_data message }
   end
 end

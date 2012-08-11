@@ -1,8 +1,8 @@
 require 'yaml'
 
 class CommandParser
-  def initialize server
-    @server = server
+  def initialize world
+    @world = world
     @commands = YAML.load_file("lib/commands.yml")
     @connection = nil
   end
@@ -17,15 +17,13 @@ class CommandParser
 
   def exit *args
       @connection.disconnect_player
-      @connection.close_connection_after_writing
-      puts "Connection for #{@player ? @player : "unknown"} closed."
   end
 
   def chat message=nil
     if message.nil? 
       @connection.send_data("Chat what?") 
     else
-      @server.connections.each { |c| c.send_data "#{@connection.player.name.chomp} chats: #{message}\n#{prompt}" }
+      @world.broadcast "#{@connection.player.name.chomp} chats: #{message}\n#{prompt}"
     end
   end
 
@@ -35,8 +33,7 @@ class CommandParser
   end
 
   def who *args
-    @connection.world.players.each { |player| @connection.send_data "#{player.name} online.\n" }
-    
+    @world.players.each { |p| @connection.send_data( "#{p.name} online.\n") }
   end
 
   def prompt

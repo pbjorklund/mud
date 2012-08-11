@@ -3,16 +3,16 @@ require 'pry'
 
 class Server
   attr_reader :connections
+  attr_reader :world
 
   def initialize *args
     @connections = []
-    @world = World.new(CommandParser.new(self))
+    @world = World.new self
   end
     
   def start
     EventMachine::run {  
       EventMachine::start_server("0.0.0.0", 3500, MudConnection) do |connection|
-        connection.server = self
         connection.world = @world
         @connections << connection
       end
@@ -24,4 +24,3 @@ class Server
   end
 end
 
-require_relative 'mud_connection'

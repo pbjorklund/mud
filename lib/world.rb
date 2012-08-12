@@ -15,6 +15,7 @@ class World
 
   def sign_out_player player
     @players.delete player
+    broadcast "#{player.name} quit.\n"
   end
 
   def broadcast message

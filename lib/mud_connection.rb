@@ -21,14 +21,10 @@ class MudConnection < EventMachine::Connection
 
   def disconnect
     close_connection_after_writing
-    puts "Connection for #{player} closed."
+    puts "Connection for #{@player_controller.player.name} closed."
   end
 
   def world= world
     @player_controller.world = world
-  end
-
-  def player
-    @player_controller.player.name
   end
 end

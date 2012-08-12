@@ -5,7 +5,6 @@ require 'em-spec/rspec'
 describe MudConnection do
   include EM::SpecHelper
 
-
   describe "#post_init" do
     it "sends a welcome message" do
       em do
@@ -33,8 +32,6 @@ describe MudConnection do
 
         done
       end
-      
     end
-    
   end
 end

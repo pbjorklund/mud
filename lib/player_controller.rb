@@ -14,13 +14,17 @@ class PlayerController
       @player = create_new_player data
 
       if @player.nil?
-        @connection.send_data("You must enter a name\n\nEnter name: ") 
+        send_to_player "You must enter a name\n\nEnter name: "
       end
 
     else 
       @world.command_parser.parse(data, self)
       @connection.send_data player.prompt
     end
+  end
+
+  def send_data data
+    @connection.send_data data
   end
 
   def disconnect_player
@@ -30,24 +34,25 @@ class PlayerController
     @connection.disconnect_player
   end
 
+  private 
   def create_new_player data
     unless data.empty?
       @player = Player.new(data)
-
       @world.add_player @player
-
       @world.broadcast "#{player.name} joined the game!\n"
 
-      @connection.send_data("\nWelcome #{@player.name}\n")
-      @connection.send_data "Type 'help' for help.\n"
-      @connection.send_data "---------------------\n"
-      @connection.send_data player.prompt
+      [
+        "\nWelcome #{@player.name}\n", 
+        "Type 'help' for help.\n",
+        "---------------------\n",
+        player.prompt
+      ].each { |message| send_to_player message  }
 
       player
     end
   end
 
-  def send_data data
-    @connection.send_data data
+  def send_to_player message
+    @connection.send_data(message)
   end
 end

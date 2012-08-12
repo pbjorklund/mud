@@ -19,7 +19,7 @@ class MudConnection < EventMachine::Connection
     @player_controller.receive_data data
   end
 
-  def disconnect_player
+  def disconnect
     close_connection_after_writing
     puts "Connection for #{player} closed."
   end

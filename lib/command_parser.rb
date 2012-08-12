@@ -6,8 +6,8 @@ class CommandParser
     @commands = YAML.load_file("lib/commands.yml")
   end
 
-  def parse data, connection
-    @connection = connection
+  def parse data, controller
+    @controller = controller
     command, message = data.split(' ')
     self.send(command.to_sym, message) if @commands.select { |c| c.match /^#{command}/ } unless command.nil?
   end
@@ -15,27 +15,27 @@ class CommandParser
   private
 
   def exit *args
-      @connection.disconnect_player
+      @controller.disconnect_player
   end
 
   def chat message=nil
     if message.nil?
-      @connection.send_data("Chat what?") 
+      @controller.send_data("Chat what?\n") 
     else
-      @world.broadcast "#{@connection.player.name.chomp} chats: #{message}\n"
+      @world.broadcast "#{@controller.player.name.chomp} chats: #{message}\n"
     end
   end
 
   def help *args
-    @connection.send_data "Known commands:.\n"
-    @commands.each { |command| @connection.send_data "#{command}\n" }
+    @controller.send_data "Known commands:.\n"
+    @commands.each { |command| @controller.send_data "#{command}\n" }
   end
 
   def who *args
-    @world.players.each { |p| @connection.send_data( "#{p.name} online.\n") }
+    @world.players.each { |p| @controller.send_data( "#{p.name} online.\n") }
   end
 
   def method_missing method, *args
-    @connection.send_data "#{method} is an unknown command.\n"
+    @controller.send_to_player "#{method} is an unknown command.\n"
   end
 end

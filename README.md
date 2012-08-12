@@ -53,7 +53,10 @@ Player has no other objects
 Data flow
 ---------
 MudConnection receives input from client and delegates it raw to PlayerController.
+
 PlayerController creates Player when receiving data if no player is already created.
+
 PlayerController delegates incoming data to CommandParser with a reference to ```self```
+
 CommandParser interprets commands and sends messages to PlayerController for player related actions and sends messages to World for world-wide actions.
 

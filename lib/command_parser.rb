@@ -40,7 +40,6 @@ class CommandParser
   def help *args
     send_to_player "Known commands:.\n"
     @commands.each { |command| send_to_player "#{command}\n" }
-      binding.pry
   end
 
   def who *args

@@ -13,7 +13,8 @@ class CommandParser
     @controller = controller
     @player = controller.player
     command, message = data.split(' ')
-    self.send(command.to_sym, message) if @commands.select { |c| c.match /^#{command}/ } unless command.nil?
+    #todo @player.class
+    self.send(command.to_sym, message) if @commands["general"].select { |c| c.match /^#{command}/ } unless command.nil?
   end
 
   def look *args
@@ -39,7 +40,14 @@ class CommandParser
 
   def help *args
     send_to_player "Known commands:.\n"
-    @commands.each { |command| send_to_player "#{command}\n" }
+
+
+    binding.pry
+    @commands["general"].each do |k,v| 
+      send_to_player %Q{--- \033[32m#{@commands["general"][k]["command"].upcase!}\033[0m ---
+Usage:       #{@commands["general"][k]["usage"]}
+Description: #{@commands["general"][k]["description"]} }
+    end
   end
 
   def who *args

@@ -1,5 +1,34 @@
-- chat
-- exit
-- who
-- help
+general:
+  chat: 
+    command: "chat"
+    usage: "chat <message>"
+    description: |
+      Chat is the general worldwide communications channel. 
+      Please behave.
+  exit:
+    command: "exit"
+    usage: "exit"
+    description: |
+      Log out of the game
+  who:
+    command: "who"
+    usage: "who"
+    description: |
+      See who else is online at the moment. 
+      The list includes every player,
+      including you.
+  help:
+    command: "help"
+    usage: "help"
+    description: |
+      Display this helpfile.
+movement:
+  north:
+  south:
+  east:
+  west:
+classes:
+  god:
+    giveall:
+      description: "Oh yes, godlike"
 

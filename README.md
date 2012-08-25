@@ -27,36 +27,3 @@ Since the controller needs to know the world which is created by the server we f
 
 ### PlayerController
 Responsible for handling actions related to the player and forwarding messages to the right objects.
-
-Relationships
--------------
-Server has MudConnections
-Server creates World
-
-World receieves Players from MudConnection
-World creates CommandParser
-World has Server
-
-CommandParser has World
-CommandParser has PlayerController
-  - CommandParser#parse receives string with data and PlayerController
-
-MudConnection has PlayerController
-  - Delegates World sent by Server to PlayerController
-
-PlayerController is initialized with MudConnection
-PlayerController creates Player
-PlayerController receieves World from MudConnection
-
-Player has no other objects
-
-Data flow
----------
-MudConnection receives input from client and delegates it raw to PlayerController.
-
-PlayerController creates Player when receiving data if no player is already created.
-
-PlayerController delegates incoming data to CommandParser with a reference to ```self```
-
-CommandParser interprets commands and sends messages to PlayerController for player related actions and sends messages to World for world-wide actions.
-

@@ -7,7 +7,7 @@ class Server
 
   def initialize *args
     @connections = []
-    @world = World.new self
+    @world = World.new self, @connections
   end
     
   def start

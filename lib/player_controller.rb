@@ -28,9 +28,9 @@ class PlayerController
 
   def sign_in_player player_name
     if player_name.empty?
-      send_to_player "You must enter a name\n\nEnter name: " 
+      send_data "You must enter a name\n\nEnter name: " 
     elsif player_already_signed_in? player_name
-      send_to_player "That name is already taken. \n\nEnter another name: "
+      send_data "That name is already taken. \n\nEnter another name: "
     else
       @player = create_new_player player_name
     end
@@ -45,15 +45,11 @@ class PlayerController
     @connection.disconnect
   end
 
-  def send_to_player message
-    @connection.send_data(message)
-  end
-
   private 
 
   def create_new_player data
     unless data.empty?
-      @player = Player.new(data)
+      @player = Player.new data, {controller: self}
       @world.add_player @player
       @world.broadcast "#{player.name} joined the game!\n"
 
@@ -62,8 +58,9 @@ class PlayerController
         "Type 'help' for help.\n",
         "---------------------\n",
         player.prompt
-      ].each { |message| send_to_player message  }
+      ].each { |message| send_data message  }
 
+      player.position = @world.rooms.first
       player
     end
   end

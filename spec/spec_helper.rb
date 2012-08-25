@@ -2,6 +2,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rspec'
 require 'pry'
+require 'factories'
+
 
 #Req
 Dir[File.dirname(__FILE__) + "/../lib/*.rb"].each { |f| require f }

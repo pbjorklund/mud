@@ -8,4 +8,11 @@ describe Player do
       subject.prompt.should == " >> "
     end
   end
+
+  describe "#position" do
+    it "has a position" do
+      subject.should respond_to(:position)
+      subject.should respond_to(:position=)
+    end
+  end
 end

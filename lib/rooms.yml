@@ -1,0 +1,31 @@
+rooms:
+  1000:
+    id: 1000
+    name: "A portal"
+    description: | 
+      You are standing in a room void of anything. 
+      It's not pleasant, but it's not unpleasant
+    exits:
+      north: 1001
+      east: 1003
+  1001:
+    id: 1001
+    name: "1 room"
+    description: "Room 1 description"
+    exits:
+      south: 1000
+      east: 1002
+  1002:
+    id: 1002
+    name: "2 room"
+    description: "Room 2 description"
+    exits:
+      west: 1001
+      south: 1003
+  1003:
+    id: 1003
+    name: "3 room"
+    description: "Room 3 description"
+    exits:
+      north: 1002
+      west: 1000

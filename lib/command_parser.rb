@@ -41,8 +41,6 @@ class CommandParser
   def help *args
     send_to_player "Known commands:.\n"
 
-
-    binding.pry
     @commands["general"].each do |k,v| 
       send_to_player %Q{--- \033[32m#{@commands["general"][k]["command"].upcase!}\033[0m ---
 Usage:       #{@commands["general"][k]["usage"]}

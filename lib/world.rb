@@ -25,7 +25,7 @@ class World
   end
 
   def broadcast message
-    @connections.each { |c| c.send_data message }
+    @connections.each { |c| c.send_data "\n[World] " + message + "\n" }
   end
 
   def move_player player, direction

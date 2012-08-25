@@ -12,7 +12,7 @@ class PlayerController
     data.chomp!
 
     if @player
-      if @player.valid?
+      if @player.has_no_password?
         @player.password = data
         add_player_to_world
         return
@@ -68,7 +68,7 @@ class PlayerController
 
   private 
   def send_successful_login_message
-    @world.broadcast "#{@player.name} joined the game!\n"
+    @world.broadcast "#{@player.name} joined the game!"
 
     [ "\nWelcome #{@player.name}\n", 
       "Type 'help' for help.\n",

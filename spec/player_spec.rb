@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Player do
-  let(:subject) { Player.new "Nils" }
+  let(:subject) { MudFactory.player }
 
   before(:each) do
     Player.any_instance.stub(:player_file).with("test").and_return("spec/players/test.yml")
@@ -10,7 +10,7 @@ describe Player do
 
   describe "#prompt" do
     it "returns the users prompt" do
-      subject.prompt.should == " >> "
+      subject.prompt.should == "HP:100 >> "
     end
   end
 
@@ -47,5 +47,11 @@ describe Player do
       player = Player.load_or_create "test_create"
     end
     
+  end
+
+  describe "#hp" do
+    it "has hitpoints" do
+      subject.hp.should == 100
+    end
   end
 end

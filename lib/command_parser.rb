@@ -44,7 +44,7 @@ class CommandParser
     @commands["general"].each do |k,v| 
       send_to_player %Q{--- \033[32m#{@commands["general"][k]["command"].upcase!}\033[0m ---
 Usage:       #{@commands["general"][k]["usage"]}
-Description: #{@commands["general"][k]["description"]} }
+Description: #{@commands["general"][k]["description"]}}
     end
   end
 

@@ -1,15 +1,13 @@
 class Player
-  attr_accessor :name
-  attr_accessor :prompt
-  attr_reader :position
-  attr_accessor :controller
-  attr_reader :authorized
+  attr_accessor :name, :prompt,  :controller, :hp
+  attr_reader :position, :authorized
 
   def initialize name, args={}
     @position = args[:position]
     @controller = args[:controller]
+    @hp = args[:hp]
     @name = name
-    @prompt = " >> "
+    @prompt = "HP:#{@hp} >> "
     @password = nil
   end
 
@@ -19,7 +17,7 @@ class Player
   end
 
   def self.create name
-    new_player = self.new name
+    new_player = self.new name, { hp: 100 }
     File.open(player_file(name), 'w') { |f| f.write(YAML.dump(new_player)) }
     new_player
   end

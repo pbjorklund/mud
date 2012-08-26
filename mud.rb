@@ -1,4 +1,8 @@
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
 
-server = Server.new
-server.start
+begin
+  server = Server.new
+  server.start
+rescue
+  retry
+end

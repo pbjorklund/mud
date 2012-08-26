@@ -21,6 +21,14 @@ class PlayerController
   end
 
   def move_player direction
+    direction = case direction
+                when :n then :north
+                when :s then :south
+                when :w then :west
+                when :e then :east
+                else direction
+                end
+
     rooms = @world.rooms
 
     current_room = rooms.find { |r| r.id == get_current_room_id }
@@ -118,7 +126,7 @@ class PlayerController
     @world.find_room(@player.current_room_id).remove_player(@player.name)
     @player.save
     @world.player_controllers.delete self
-    @world.broadcast @player.name + message + ".\n"
+    @world.broadcast @player.name + " " + message + ".\n"
     @connection.disconnect
   end
 

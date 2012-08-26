@@ -13,6 +13,19 @@ class Player
     @kills = 0
   end
 
+  def add_kill target
+    @kills += 1
+    save
+
+    case @kills
+    when 1 then "As your body consumes #{target} you feels spikes growing from your shoulders."
+    when 2 then "As your body consumes #{target} your hands morph into stone."
+    when 5 then "As your body consumes #{target} your head stretches out, forming a deadly spike."
+    when 10 then "As your body consumes #{target} you start to think, realizing killing is wrong."
+    else "You relish the kill, knowing that it will make you stronger."
+    end
+  end
+
   def prompt
     @prompt = "Essence:#{@hp.round(0)} Consumed:#{@kills} >> "
   end

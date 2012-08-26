@@ -10,8 +10,11 @@ class MudConnection < EventMachine::Connection
   def post_init
     puts "Connection established"
 
-    send_data "Welcome to RMUD. Alpha 0.0.1\n\n"
-    send_data "Enter name: "
+    send_data "++++++++++++++++++++++++++++++++++\n"
+    send_data "+ Welcome to the Darwin Wars Mud +\n"
+    send_data "+       A place for growth       +\n"
+    send_data "++++++++++++++++++++++++++++++++++\n"
+    send_data "\nEnter name: "
   end
 
   def receive_data data

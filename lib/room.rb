@@ -24,7 +24,6 @@ class Room
     %Q{
 \033[32m#{self.name}\033[0m
 #{self.description}
-Exits: [ #{self.exits.inject("") { |tot, el| el[0] + " " + tot }}]
-}
+Exits: [ #{self.exits.inject("") { |tot, el| el[0] + " " + tot }}]}
   end
 end

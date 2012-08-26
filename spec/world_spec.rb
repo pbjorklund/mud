@@ -1,76 +1,49 @@
 require 'spec_helper'
 require 'world'
 
-describe "World" do
-
-  let(:player) { mock Player }
-  let(:server) { mock Server.as_null_object }
-  let(:subject) { World.new mock(server), mock }
-
-  it "creates a new global commandparser" do
-    subject.command_parser.should_not be_nil
-  end
-
-  it "references a server" do
-    subject.instance_variable_get(:@server).should_not be_nil
-  end
-
+describe World do
   describe "player handling do" do
-    it "is initialized with an empty array of player" do
-      subject.players.should == Array.new
+    it "keeps track of playercontrollers" do
+      subject.instance_variable_get(:@player_controllers).should_not be_nil
     end
 
-    describe "#add_player" do
+    describe "#add_player_controller" do
       it "adds a player given a player" do
-        subject.add_player(player)
-        subject.players.count.should == 1
+        subject.add_player_controller(mock)
+        subject.player_controllers.count.should == 1
       end
     end
 
-    describe "#sign_out_player" do
-      it "signs out a player that is loaded" do
-        player.stub(:name).and_return("playername")
-        player.stub(:room_id).and_return(MudFactory.room.id)
-        subject.stub(:broadcast).and_return(nil)
+    describe "#broadcast" do
+      it "broadcasts messages to the world" do
+        player_controller = mock
+        connection = mock
 
-        subject.add_player(player)
-        subject.sign_out_player(player)
-        subject.players.count.should == 0
+        player_controller.stub(:connection).and_return(connection)
+        connection.should_receive(:send_data).twice
+
+        subject.instance_variable_set(:@player_controllers, [player_controller, player_controller])
+        subject.broadcast "message"
       end
     end
-  end
 
-  describe "#broadcast" do
-    it "broadcasts messages to the world" do
-      connection = mock
-      connection.stub(:send_data).and_return(nil)
-      connection.should_receive(:send_data).twice
-      subject.instance_variable_set(:@connections, [connection, connection])
-      subject.broadcast "message"
-    end
-  end
-
-  describe "rooms" do
-    it "has a representation of the worlds rooms" do
-      subject.rooms.should_not be_nil
+    describe "#find_player_controller" do
+      it "searches it's playercontrollers" do
+        pc = mock.as_null_object
+        pc.should_receive(:player).once
+        subject.instance_variable_set(:@player_controllers, [pc])
+        subject.find_player_controller "player name"
+      end
     end
 
-    it "can't be empty" do
-      subject.rooms.count.should > 0
-    end
-  end
+    describe "rooms" do
+      it "has a representation of the worlds rooms" do
+        subject.rooms.should_not be_nil
+      end
 
-  describe "#move_player" do
-    it "moves a player north if possible" do
-      player = MudFactory.player
-      player.stub(:room_id).and_return(MudFactory.room.id)
-      controller = mock
-      controller.stub(:send_data).and_return(nil)
-      player.stub(:controller).and_return(controller)
-      subject.instance_variable_set(:@rooms, [MudFactory.room])
-      subject.move_player player, :north
+      it "can't be empty" do
+        subject.rooms.count.should > 0
+      end
     end
-    
   end
 end
-

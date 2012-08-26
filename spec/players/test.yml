@@ -1,6 +1,0 @@
---- !ruby/object:Player
-position: 
-controller: 
-name: test
-prompt: ! ' >> '
-password: 

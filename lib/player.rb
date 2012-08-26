@@ -1,22 +1,24 @@
 class Player
-  attr_accessor :name, :prompt, :controller, :hp
+  attr_accessor :name, :controller, :hp, :max_hp, :kills
+  attr_writer :prompt
   attr_reader :current_room_id, :authorized
 
   def initialize name, args={}
     @current_room_id = args[:current_room_id]
     @controller = args[:controller]
     @hp = args[:hp]
+    @max_hp = 20
     @name = name
-    @prompt = "HP:#{@hp} >> "
     @password = nil
+    @kills = 0
   end
 
-  def update_prompt
-    @prompt = "HP:#{@hp} >> "
+  def prompt
+    @prompt = "Essence:#{@hp.round(0)} Consumed:#{@kills} >> "
   end
 
   def current_room_id= room_id
-    @controller.world.find_room(room_id.to_i).add_player(self.name)
+    @controller.world.find_room(room_id).add_player(self.name)
     @current_room_id = room_id
   end
 
@@ -43,14 +45,14 @@ class Player
   end
 
   def self.create name, controller
-    new_player = self.new name, { hp: 100, controller: controller }
+    new_player = self.new name, { hp: 20, controller: controller }
     File.open(player_file(name), 'w') { |f| f.write(YAML.dump(new_player)) }
     new_player
   end
 
   def self.load name, controller
     loaded_player = nil
-    File.open(player_file(name), 'r') { |f| loaded_player = YAML.load(f) }
+    File.open(player_file(name)) { |f| loaded_player = YAML.load(f) }
 
     loaded_player.controller = controller
     loaded_player

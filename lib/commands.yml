@@ -27,6 +27,16 @@ general:
     usage: "save"
     description: |
       Saves your player.
+  consume:
+    command: "consume"
+    usage: "consume | c | kill"
+    description: |
+      Absorb some of your enemies essence.
+  lick:
+    command: "lick"
+    usage: "lick"
+    description: |
+      Lick your wounds to restore some of your essence.
 movement:
   north:
   south:

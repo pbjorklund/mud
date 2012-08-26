@@ -12,4 +12,12 @@ class MudFactory
   def self.second_player
     Player.new("erik", {room_id: room.id} )
   end
+
+  def self.world
+    World.new
+  end
+
+  def self.player_controller
+    
+  end
 end

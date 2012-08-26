@@ -13,6 +13,8 @@ class CommandParser
   def parse data
     @player = @player_controller.player
     command, message = data.split(' ')
+
+    command = command.gsub(/[^0-9A-Za-z]/, '') unless command.nil?
     #todo @player.class
     self.send(command.to_sym, message) if @commands["general"].select { |c| c.match /^#{command}/ } unless command.nil?
   end
@@ -55,8 +57,8 @@ Description: #{@commands["general"][k]["description"]}}
     pcs.each { |pc| send_to_player "#{pc.player.name}" }
   end
 
-  def kill target
-    return send_to_player "Kill who?" if target.nil?
+  def consume target
+    return send_to_player "Consume who?" if target.nil?
 
     target_name = @world.find_room(@player.current_room_id).players.select { |p| p == target }.first
 
@@ -64,19 +66,32 @@ Description: #{@commands["general"][k]["description"]}}
       send_to_player("Noone by that name here") 
     elsif
       target_name == @player.name
-      send_to_player("Stop hitting yourself.") 
+      send_to_player("You can't consume your own essence.") 
     else 
-      send_to_player("You hit #{target}.") 
+      send_to_player("You reach out, consuming some of #{target}'s essence.") 
 
       target_controller = @world.find_player_controller(target_name)
-      target_controller.decrease_hp(10)
+
+      target_controller.decrease_hp(rand(6)+(@player.kills.to_i*0.2))
+
       if target_controller.player_alive?
-        target_controller.send_data "#{@player.name} hit you!"
+        target_controller.send_data "#{@player.name} consumes some of your essence, you feel weaker.\n"
       else
-        target_controller.send_data "#{@player.name} killed you! YOU ARE DEAD!"
+        @player.kills += 1
+        @player.save
+
+        target_controller.send_data "#{@player.name} killed you! YOU ARE DEAD!\n"
+        target_controller.send_data "Log in again to keep fighting the darwin wars\n"
+        target_controller.player.hp = @player.max_hp
+        target_controller.disconnect_player("#{target_name} was consumed by #{@player.name}, growing their power")
       end
     end
 
+  end
+
+  def lick *args
+    hp_increase = rand(5..10)
+    @player_controller.increase_hp(hp_increase)
   end
 
   def save *args
@@ -101,4 +116,7 @@ Description: #{@commands["general"][k]["description"]}}
   def send_to_world message
     @world.broadcast message + "\n"
   end
+
+  alias :kill :consume
+  alias :c :consume
 end

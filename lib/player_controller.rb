@@ -39,7 +39,13 @@ class PlayerController
 
       players_in_room.each do |p| 
         controller = @world.find_player_controller(p)
-        controller.send_data "#{@player.name} enters from the #{came_from}\n"
+        controller.send_data "\n#{@player.name} enters from the #{came_from}\n"
+      end
+
+      current_room_players_without_self = current_room.players.select { |p| p != @player.name }
+      current_room_players_without_self.each do |p| 
+        controller = @world.find_player_controller(p)
+        controller.send_data "\n#{@player.name} leaves #{direction}\n"
       end
 
       current_room.remove_player player.name
@@ -108,11 +114,11 @@ class PlayerController
     @connection.send_data data
   end
 
-  def disconnect_player
+  def disconnect_player message="quit"
     @world.find_room(@player.current_room_id).remove_player(@player.name)
     @player.save
     @world.player_controllers.delete self
-    @world.broadcast "#{@player.name} quit.\n"
+    @world.broadcast @player.name + message + ".\n"
     @connection.disconnect
   end
 
@@ -120,9 +126,22 @@ class PlayerController
     @players.select { |p| p.name == player_name }
   end
 
-  def decrease_hp ammount
-    @player.hp -= 10
-    @player.update_prompt
+  def decrease_hp ammount=10
+    @player.hp -= ammount
+    #TODO Render better
+    send_data @player.prompt
+  end
+
+  def increase_hp ammount
+    after_ammount = @player.hp + ammount
+    if @player.max_hp < after_ammount 
+      send_data "\nYou already feel strong enough to keep fighting.\n"
+    else
+      @player.hp = after_ammount
+      send_data "You lick your wounds, restoring some of your essence.\n"
+    end
+    #TODO Render better
+    send_data @player.prompt
   end
 
   def player_alive?
@@ -140,4 +159,5 @@ class PlayerController
     ].each { |message| send_data message  }
   end
 end
+
 

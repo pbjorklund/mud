@@ -4,12 +4,12 @@ class MudFactory
   end
 
   def self.player
-    player = Player.new("pbjorklund", {position: room, hp: 100} )
+    player = Player.new("pbjorklund", {room_id: room.id, hp: 100} )
     player.password = "password"
     player
   end
 
   def self.second_player
-    Player.new("erik", {position: room} )
+    Player.new("erik", {room_id: room.id} )
   end
 end

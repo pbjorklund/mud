@@ -18,7 +18,7 @@ describe CommandParser do
     end
 
     it "returns an error message for unknown commands" do
-      subject.should_receive(:send_to_player).with("unknown is an unknown command.\n").once
+      subject.should_receive(:send_to_player).with("unknown is an unknown command.").once
       error = subject.parse("unknown", controller) 
     end
   end

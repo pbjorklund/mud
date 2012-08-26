@@ -12,12 +12,12 @@ class Room
     instance_var ? instance_var : "Room does not have that"
   end
 
-  def add_player player
-    @players << player
+  def add_player player_name
+    @players << player_name
   end
 
-  def remove_player player
-    @players.delete player
+  def remove_player player_name
+    @players.delete player_name
   end
 
   def present

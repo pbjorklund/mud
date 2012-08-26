@@ -1,9 +1,9 @@
 class Player
-  attr_accessor :name, :prompt,  :controller, :hp
-  attr_reader :position, :authorized
+  attr_accessor :name, :prompt, :controller, :hp
+  attr_reader :current_room_id, :authorized
 
   def initialize name, args={}
-    @position = args[:position]
+    @current_room_id = args[:current_room_id]
     @controller = args[:controller]
     @hp = args[:hp]
     @name = name
@@ -11,15 +11,13 @@ class Player
     @password = nil
   end
 
-  def position= room
-    room.add_player(self)
-    @position = room
+  def update_prompt
+    @prompt = "HP:#{@hp} >> "
   end
 
-  def self.create name
-    new_player = self.new name, { hp: 100 }
-    File.open(player_file(name), 'w') { |f| f.write(YAML.dump(new_player)) }
-    new_player
+  def current_room_id= room_id
+    @controller.world.find_room(room_id.to_i).add_player(self.name)
+    @current_room_id = room_id
   end
 
   def save
@@ -36,22 +34,30 @@ class Player
     val = ![@name.nil?, @password.nil?].include?(true)
   end
 
-  def self.load_or_create name
-    if find_player name
-      loaded_player = nil
-      File.open(player_file(name)) { |f| loaded_player = YAML.load(f) }
-      loaded_player 
+  def self.load_or_create name, controller
+    if File.exists?(player_file name) 
+      load name, controller
     else
-      create name
+      create name, controller
     end
+  end
+
+  def self.create name, controller
+    new_player = self.new name, { hp: 100, controller: controller }
+    File.open(player_file(name), 'w') { |f| f.write(YAML.dump(new_player)) }
+    new_player
+  end
+
+  def self.load name, controller
+    loaded_player = nil
+    File.open(player_file(name), 'r') { |f| loaded_player = YAML.load(f) }
+
+    loaded_player.controller = controller
+    loaded_player
   end
 
   def self.player_file name
    "players/#{name}.yml" 
-  end
-
-  def self.find_player name
-    File.exists?(player_file name)
   end
 
   def has_no_password?

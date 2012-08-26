@@ -14,10 +14,10 @@ describe Player do
     end
   end
 
-  describe "#position" do
-    it "has a position" do
-      subject.should respond_to(:position)
-      subject.should respond_to(:position=)
+  describe "#room_id" do
+    it "has a room_id" do
+      subject.should respond_to(:room_id)
+      subject.should respond_to(:room_id=)
     end
   end
 

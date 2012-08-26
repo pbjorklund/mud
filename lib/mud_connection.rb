@@ -4,7 +4,6 @@ class MudConnection < EventMachine::Connection
   attr_accessor :player_controller
 
   def initialize *args
-    @player_controller = PlayerController.new(self)
     super
   end
 
@@ -21,10 +20,10 @@ class MudConnection < EventMachine::Connection
 
   def disconnect
     close_connection_after_writing
-    puts "Connection for #{@player_controller.player.name} closed."
+    log_to_server "Connection for #{@player_controller.player.name} closed."
   end
 
-  def world= world
-    @player_controller.world = world
+  def log_to_server message
+    puts message
   end
 end

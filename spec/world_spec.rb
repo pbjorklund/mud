@@ -30,7 +30,7 @@ describe "World" do
     describe "#sign_out_player" do
       it "signs out a player that is loaded" do
         player.stub(:name).and_return("playername")
-        player.stub(:position).and_return(MudFactory.room)
+        player.stub(:room_id).and_return(MudFactory.room.id)
         subject.stub(:broadcast).and_return(nil)
 
         subject.add_player(player)
@@ -63,7 +63,7 @@ describe "World" do
   describe "#move_player" do
     it "moves a player north if possible" do
       player = MudFactory.player
-      player.stub(:position).and_return(MudFactory.room)
+      player.stub(:room_id).and_return(MudFactory.room.id)
       controller = mock
       controller.stub(:send_data).and_return(nil)
       player.stub(:controller).and_return(controller)

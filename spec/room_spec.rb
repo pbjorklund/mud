@@ -28,10 +28,10 @@ describe Room do
     player = MudFactory.player
     second_player = MudFactory.second_player
 
-    subject.add_player player
-    subject.add_player second_player
+    subject.add_player player.name
+    subject.add_player second_player.name
 
-    subject.remove_player player
+    subject.remove_player player.name
     subject.players.count.should == 1
   end
 end

@@ -9,7 +9,7 @@ general:
     command: "exit"
     usage: "exit"
     description: |
-      Log out of the game
+      Save character and log out of the game
   who:
     command: "who"
     usage: "who"
@@ -22,6 +22,11 @@ general:
     usage: "help"
     description: |
       Display this helpfile.
+  save:
+    command: "save"
+    usage: "save"
+    description: |
+      Saves your player.
 movement:
   north:
   south:
